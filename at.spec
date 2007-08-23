@@ -20,8 +20,8 @@ Patch9:		at-3.1.8-shell.patch
 Patch10:	at-3.1.8-o_excl.patch
 Patch11:	at-3.1.8-heapcorruption.patch
 Patch12:        at-3.1.8-no-strip-shell-script.patch
-Requires(post):	fileutils chkconfig /etc/init.d rpm-helper
-Requires(preun):  fileutils chkconfig /etc/init.d rpm-helper
+Requires(post):	coreutils chkconfig /etc/init.d rpm-helper
+Requires(preun):  coreutils chkconfig /etc/init.d rpm-helper
 Conflicts:	crontabs <= 1.5
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Requires:	common-licenses
