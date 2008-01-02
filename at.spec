@@ -23,6 +23,7 @@ Patch12:        at-3.1.8-no-strip-shell-script.patch
 Requires(post):	coreutils chkconfig /etc/init.d rpm-helper
 Requires(preun):  coreutils chkconfig /etc/init.d rpm-helper
 Conflicts:	crontabs <= 1.5
+Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Requires:	common-licenses
 BuildRequires:	autoconf2.1 automake1.7 flex gcc python sendmail-command
 BuildRequires:	bison vixie-cron
