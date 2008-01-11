@@ -1,7 +1,7 @@
 Summary:	Job spooling tools
 Name:		at
 Version:	3.1.8
-Release:	%mkrel 23
+Release:	%mkrel 24
 License:	GPL
 Group:		System/Servers
 Source0:	ftp://tsx-11.mit.edu/pub/linux/sources/usr.bin/at-3.1.8.tar.bz2
