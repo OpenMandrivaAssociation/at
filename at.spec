@@ -1,13 +1,14 @@
 Summary:	Job spooling tools
 Name:		at
 Version:	3.1.10.1
-Release:	%mkrel 2
+Release:	%mkrel 3
 License:	GPL
 Group:		System/Servers
 Source0:	http://ftp.debian.org/debian/pool/main/a/at/at_%{version}.tar.gz
 Url:		http://qa.mandriva.com
 Source1:	atd.init
 Source2:    pam.atd
+Source3:    atd.sysconfig
 Patch0:		at-3.1.7-lockfile.patch
 Patch3:		at-3.1.7-sigchld.patch
 Patch4:		at-3.1.8-noroot.patch
@@ -66,6 +67,8 @@ chmod 755 $RPM_BUILD_ROOT%{_initrddir}/atd
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/pam.d
 install -m 644 %SOURCE2 $RPM_BUILD_ROOT/%{_sysconfdir}/pam.d/atd
 
+install -D -m 644 %SOURCE3 %buildroot/%{_sysconfdir}/sysconfig/atd
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -83,6 +86,7 @@ chown daemon.daemon /var/spool/at/.SEQ
 %defattr(-,root,root)
 %doc ChangeLog Problems README Copyright timespec
 %attr(0640,root,daemon) %config(noreplace) %{_sysconfdir}/at.deny
+%config(noreplace) %_sysconfdir/sysconfig/atd
 %{_initrddir}/atd
 %{_sysconfdir}/pam.d/atd
 %attr(0770,daemon,daemon)	%dir /var/spool/at
