@@ -1,18 +1,16 @@
 Summary:	Job spooling tools
 Name:		at
-Version:	3.1.10.2
+Version:	3.1.11
 Release:	%mkrel 3
 License:	GPL
 Group:		System/Servers
-Source0:	http://ftp.debian.org/debian/pool/main/a/at/at_%{version}.tar.gz
+Source0:	http://ftp.debian.org/debian/pool/main/a/at/at_%{version}.orig.tar.gz
 Url:		http://qa.mandriva.com
 Source1:	atd.init
 Source2:    pam.atd
 Source3:    atd.sysconfig
-Patch0:		at-3.1.7-lockfile.patch
 Patch3:		at-3.1.7-sigchld.patch
 Patch4:		at-3.1.8-noroot.patch
-Patch5:		at-3.1.8-typo.patch
 Patch9:		at-3.1.8-shell.patch
 Requires(post):	coreutils chkconfig /etc/init.d rpm-helper
 Requires(preun):  coreutils chkconfig /etc/init.d rpm-helper
@@ -37,10 +35,8 @@ day/week/etc.
 
 %prep
 %setup -q
-%patch0 -p1 -b .lockfile
 %patch3 -p1 -b .sigchld
 %patch4 -p0 -b .noroot
-%patch5 -p1 -b .tyop
 %patch9 -p0 -b .shell
 
 export WANT_AUTOCONF_2_5=1
