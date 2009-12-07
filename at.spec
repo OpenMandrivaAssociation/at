@@ -1,7 +1,7 @@
 Summary:	Job spooling tools
 Name:		at
 Version:	3.1.12
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPL
 Group:		System/Servers
 Source0:	http://ftp.debian.org/debian/pool/main/a/at/at_%{version}.orig.tar.gz
@@ -12,6 +12,7 @@ Source3:    atd.sysconfig
 Patch3:		at-3.1.7-sigchld.patch
 Patch4:		at-3.1.8-noroot.patch
 Patch9:		at-3.1.8-shell.patch
+Patch10:	at-3.1.12-parallel-build.patch
 Requires(post):	coreutils chkconfig /etc/init.d rpm-helper
 Requires(preun):  coreutils chkconfig /etc/init.d rpm-helper
 Conflicts:	crontabs <= 1.5
@@ -38,6 +39,7 @@ day/week/etc.
 %patch3 -p1 -b .sigchld
 %patch4 -p0 -b .noroot
 %patch9 -p0 -b .shell
+%patch10 -p0 -b .parallel
 
 %build
 autoreconf -fi
