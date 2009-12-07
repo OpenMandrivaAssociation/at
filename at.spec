@@ -17,7 +17,7 @@ Requires(preun):  coreutils chkconfig /etc/init.d rpm-helper
 Conflicts:	crontabs <= 1.5
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Requires:	common-licenses
-BuildRequires:	autoconf2.1 automake1.7 flex gcc python sendmail-command
+BuildRequires:	autoconf automake flex gcc python sendmail-command
 BuildRequires:	bison vixie-cron
 BuildRequires:  pam-devel
 
@@ -39,12 +39,10 @@ day/week/etc.
 %patch4 -p0 -b .noroot
 %patch9 -p0 -b .shell
 
-export WANT_AUTOCONF_2_5=1
-libtoolize --copy --force; aclocal-1.7; autoconf
-
 %build
+autoreconf -fi
 %serverbuild
-%configure --with-atspool=/var/spool/at/spool --with-jobdir=/var/spool/at
+%configure2_5x --with-atspool=/var/spool/at/spool --with-jobdir=/var/spool/at
 
 make
 
