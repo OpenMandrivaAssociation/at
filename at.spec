@@ -46,7 +46,7 @@ libtoolize --copy --force; aclocal-1.7; autoconf
 %serverbuild
 %configure --with-atspool=/var/spool/at/spool --with-jobdir=/var/spool/at
 
-%make
+make
 
 %install
 rm -rf $RPM_BUILD_ROOT 
