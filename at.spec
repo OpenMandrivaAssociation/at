@@ -1,7 +1,7 @@
 Summary:	Job spooling tools
 Name:		at
 Version:	3.1.12
-Release:	%mkrel 3
+Release:	%mkrel 4
 License:	GPL
 Group:		System/Servers
 Source0:	http://ftp.debian.org/debian/pool/main/a/at/at_%{version}.orig.tar.gz
