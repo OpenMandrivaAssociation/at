@@ -1,26 +1,31 @@
 Summary:	Job spooling tools
 Name:		at
-Version:	3.1.12
-Release:	%mkrel 4
+Version:	3.1.13
+Release:	%mkrel 1
 License:	GPL
 Group:		System/Servers
 Source0:	http://ftp.debian.org/debian/pool/main/a/at/at_%{version}.orig.tar.gz
 Url:		http://qa.mandriva.com
 Source1:	atd.init
-Source2:    pam.atd
-Source3:    atd.sysconfig
+Source2:	pam.atd
+Source3:	atd.sysconfig
 Patch3:		at-3.1.7-sigchld.patch
-Patch4:		at-3.1.8-noroot.patch
 Patch9:		at-3.1.8-shell.patch
-Patch10:	at-3.1.12-parallel-build.patch
+Patch11:	at-3.1.13-makefile.patch
 Requires(post):	coreutils chkconfig /etc/init.d rpm-helper
 Requires(preun):  coreutils chkconfig /etc/init.d rpm-helper
 Conflicts:	crontabs <= 1.5
-Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Requires:	common-licenses
-BuildRequires:	autoconf automake flex gcc python sendmail-command
-BuildRequires:	bison vixie-cron
-BuildRequires:  pam-devel
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	flex
+BuildRequires:	gcc
+BuildRequires:	python
+BuildRequires:	sendmail-command
+BuildRequires:	bison
+BuildRequires:	vixie-cron
+BuildRequires:	pam-devel
+Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 At and batch read commands from standard input or from a specified file.
@@ -37,36 +42,35 @@ day/week/etc.
 %prep
 %setup -q
 %patch3 -p1 -b .sigchld
-%patch4 -p0 -b .noroot
 %patch9 -p0 -b .shell
-%patch10 -p0 -b .parallel
+%patch11 -p1 -b .makefile
 
 %build
 autoreconf -fi
 %serverbuild
 %configure2_5x --with-atspool=/var/spool/at/spool --with-jobdir=/var/spool/at
 
-make
+%make
 
 %install
-rm -rf $RPM_BUILD_ROOT 
-mkdir -p $RPM_BUILD_ROOT/{%{_initrddir},%{_bindir},%{_sbindir},%{_mandir}/man{1,5,8}}
+rm -rf %{buildroot}
+mkdir -p %{buildroot}/{%{_initrddir},%{_bindir},%{_sbindir},%{_mandir}/man{1,5,8}}
 
-make install IROOT=$RPM_BUILD_ROOT DAEMON_USERNAME=`id -nu` \
+make install IROOT=%{buildroot} DAEMON_USERNAME=`id -nu` \
 	DAEMON_GROUPNAME=`id -ng` \
-    atdocdir=%_docdir/at
+    atdocdir=%{_docdir}/at
 
-echo > $RPM_BUILD_ROOT/%{_sysconfdir}/at.deny
+echo > %{buildroot}/%{_sysconfdir}/at.deny
 %{__cp} -a %{SOURCE1} %{buildroot}%{_initrddir}/atd
-chmod 755 $RPM_BUILD_ROOT%{_initrddir}/atd
+chmod 755 %{buildroot}%{_initrddir}/atd
 
-mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/pam.d
-install -m 644 %SOURCE2 $RPM_BUILD_ROOT/%{_sysconfdir}/pam.d/atd
+mkdir -p %{buildroot}/%{_sysconfdir}/pam.d
+install -m 644 %{SOURCE2} %{buildroot}/%{_sysconfdir}/pam.d/atd
 
-install -D -m 644 %SOURCE3 %buildroot/%{_sysconfdir}/sysconfig/atd
+install -D -m 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/sysconfig/atd
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %post
 touch /var/spool/at/.SEQ
@@ -100,5 +104,5 @@ chown daemon.daemon /var/spool/at/.SEQ
 %{_mandir}/*/atq.1*
 %{_mandir}/*/atrm.1*
 %{_mandir}/*/batch.1*
-%{_mandir}/*/at_allow.5*
-%{_mandir}/*/at_deny.5*
+%{_mandir}/*/at.allow.5*
+%{_mandir}/*/at.deny.5*
