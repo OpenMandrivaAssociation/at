@@ -1,7 +1,7 @@
 Summary:	Job spooling tools
 Name:		at
 Version:	3.1.13
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPL
 Group:		System/Servers
 Source0:	http://ftp.debian.org/debian/pool/main/a/at/at_%{version}.orig.tar.gz
@@ -47,7 +47,12 @@ day/week/etc.
 
 %build
 autoreconf -fi
+%if %mdvver >= 201200
+%serverbuild_hardened
+%else
 %serverbuild
+%endif
+
 %configure2_5x --with-atspool=/var/spool/at/spool --with-jobdir=/var/spool/at
 
 %make
