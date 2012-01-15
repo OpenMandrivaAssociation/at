@@ -1,19 +1,20 @@
 Summary:	Job spooling tools
 Name:		at
 Version:	3.1.13
-Release:	%mkrel 2
+Release:	%mkrel 3
 License:	GPL
 Group:		System/Servers
-Source0:	http://ftp.debian.org/debian/pool/main/a/at/at_%{version}.orig.tar.gz
 Url:		http://qa.mandriva.com
+Source0:	http://ftp.debian.org/debian/pool/main/a/at/at_%{version}.orig.tar.gz
 Source1:	atd.init
 Source2:	pam.atd
 Source3:	atd.sysconfig
+Source4:	atd.service
 Patch3:		at-3.1.7-sigchld.patch
 Patch9:		at-3.1.8-shell.patch
 Patch11:	at-3.1.13-makefile.patch
-Requires(post):	coreutils chkconfig /etc/init.d rpm-helper
-Requires(preun):  coreutils chkconfig /etc/init.d rpm-helper
+Requires(post):	coreutils chkconfig /etc/init.d rpm-helper systemd-units
+Requires(preun):  coreutils chkconfig /etc/init.d rpm-helper systemd-units
 Conflicts:	crontabs <= 1.5
 Requires:	common-licenses
 BuildRequires:	autoconf
@@ -25,6 +26,7 @@ BuildRequires:	sendmail-command
 BuildRequires:	bison
 BuildRequires:	vixie-cron
 BuildRequires:	pam-devel
+BuildRequires:	systemd-units
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
@@ -74,6 +76,10 @@ install -m 644 %{SOURCE2} %{buildroot}/%{_sysconfdir}/pam.d/atd
 
 install -D -m 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/sysconfig/atd
 
+#(tpg) install systemd initscript
+mkdir -p %{buildroot}%{_unitdir}
+install -m 644 %{SOURCE4} %{buildroot}%{_unitdir}/atd.service
+
 %clean
 rm -rf %{buildroot}
 
@@ -91,17 +97,18 @@ chown daemon.daemon /var/spool/at/.SEQ
 %defattr(-,root,root)
 %doc ChangeLog Problems README Copyright timespec
 %attr(0640,root,daemon) %config(noreplace) %{_sysconfdir}/at.deny
-%config(noreplace) %_sysconfdir/sysconfig/atd
+%config(noreplace) %{_sysconfdir}/sysconfig/atd
 %{_initrddir}/atd
 %{_sysconfdir}/pam.d/atd
-%attr(0770,daemon,daemon)	%dir /var/spool/at
-%attr(0660,daemon,daemon)	%verify(not md5 size mtime) %ghost /var/spool/at/.SEQ
-%attr(0770,daemon,daemon)	%dir /var/spool/at/spool
+%attr(0644,root,root) %{_unitdir}/atd.service
+%attr(0770,daemon,daemon) %dir /var/spool/at
+%attr(0660,daemon,daemon) %verify(not md5 size mtime) %ghost /var/spool/at/.SEQ
+%attr(0770,daemon,daemon) %dir /var/spool/at/spool
 %{_sbindir}/atrun
 %{_sbindir}/atd
 %attr(6755,daemon,daemon) %{_bindir}/batch
 %attr(6755,daemon,daemon) %{_bindir}/atrm
-%attr(6755,daemon,daemon)   %{_bindir}/at
+%attr(6755,daemon,daemon) %{_bindir}/at
 %{_bindir}/atq
 %{_mandir}/*/atrun.8*
 %{_mandir}/*/atd.8*
