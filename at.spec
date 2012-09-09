@@ -1,7 +1,7 @@
 Summary:	Job spooling tools
 Name:		at
 Version:	3.1.13
-Release:	%mkrel 3
+Release:	4
 License:	GPL
 Group:		System/Servers
 Url:		http://qa.mandriva.com
@@ -14,7 +14,7 @@ Patch3:		at-3.1.7-sigchld.patch
 Patch9:		at-3.1.8-shell.patch
 Patch11:	at-3.1.13-makefile.patch
 Requires(post):	coreutils chkconfig /etc/init.d rpm-helper systemd-units
-Requires(preun):  coreutils chkconfig /etc/init.d rpm-helper systemd-units
+Requires(preun):	coreutils chkconfig /etc/init.d rpm-helper systemd-units
 Conflicts:	crontabs <= 1.5
 Requires:	common-licenses
 BuildRequires:	autoconf
@@ -27,7 +27,6 @@ BuildRequires:	bison
 BuildRequires:	vixie-cron
 BuildRequires:	pam-devel
 BuildRequires:	systemd-units
-Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 At and batch read commands from standard input or from a specified file.
@@ -55,20 +54,21 @@ autoreconf -fi
 %serverbuild
 %endif
 
-%configure2_5x --with-atspool=/var/spool/at/spool --with-jobdir=/var/spool/at
+%configure2_5x \
+	--with-atspool=/var/spool/at/spool \
+	--with-jobdir=/var/spool/at
 
 %make
 
 %install
-rm -rf %{buildroot}
-mkdir -p %{buildroot}/{%{_initrddir},%{_bindir},%{_sbindir},%{_mandir}/man{1,5,8}}
+mkdir -p %{buildroot}/{%{_bindir},%{_sbindir},%{_mandir}/man{1,5,8}}
 
 make install IROOT=%{buildroot} DAEMON_USERNAME=`id -nu` \
 	DAEMON_GROUPNAME=`id -ng` \
     atdocdir=%{_docdir}/at
 
 echo > %{buildroot}/%{_sysconfdir}/at.deny
-%{__cp} -a %{SOURCE1} %{buildroot}%{_initrddir}/atd
+
 chmod 755 %{buildroot}%{_initrddir}/atd
 
 mkdir -p %{buildroot}/%{_sysconfdir}/pam.d
@@ -76,17 +76,23 @@ install -m 644 %{SOURCE2} %{buildroot}/%{_sysconfdir}/pam.d/atd
 
 install -D -m 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/sysconfig/atd
 
+%if %mdkver < 201200
+mkdir -p %{buildroot}%{_initrddir}
+cp -a %{SOURCE1} %{buildroot}%{_initrddir}/atd
+%else
 #(tpg) install systemd initscript
 mkdir -p %{buildroot}%{_unitdir}
 install -m 644 %{SOURCE4} %{buildroot}%{_unitdir}/atd.service
-
-%clean
-rm -rf %{buildroot}
+%endif
 
 %post
 touch /var/spool/at/.SEQ
 chmod 660 /var/spool/at/.SEQ
 chown daemon.daemon /var/spool/at/.SEQ
+
+if [ "$1" = "1" ]; then
+ /bin/systemctl enable atd.service >/dev/null 2>&1 || :
+fi
 
 %_post_service atd
 
@@ -94,13 +100,17 @@ chown daemon.daemon /var/spool/at/.SEQ
 %_preun_service atd
 
 %files
-%defattr(-,root,root)
 %doc ChangeLog Problems README Copyright timespec
 %attr(0640,root,daemon) %config(noreplace) %{_sysconfdir}/at.deny
 %config(noreplace) %{_sysconfdir}/sysconfig/atd
+
+%if %mdkver < 201200
 %{_initrddir}/atd
-%{_sysconfdir}/pam.d/atd
+%else
 %attr(0644,root,root) %{_unitdir}/atd.service
+%endif
+
+%{_sysconfdir}/pam.d/atd
 %attr(0770,daemon,daemon) %dir /var/spool/at
 %attr(0660,daemon,daemon) %verify(not md5 size mtime) %ghost /var/spool/at/.SEQ
 %attr(0770,daemon,daemon) %dir /var/spool/at/spool
