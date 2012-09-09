@@ -69,8 +69,6 @@ make install IROOT=%{buildroot} DAEMON_USERNAME=`id -nu` \
 
 echo > %{buildroot}/%{_sysconfdir}/at.deny
 
-chmod 755 %{buildroot}%{_initrddir}/atd
-
 mkdir -p %{buildroot}/%{_sysconfdir}/pam.d
 install -m 644 %{SOURCE2} %{buildroot}/%{_sysconfdir}/pam.d/atd
 
@@ -79,6 +77,7 @@ install -D -m 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/sysconfig/atd
 %if %mdkver < 201200
 mkdir -p %{buildroot}%{_initrddir}
 cp -a %{SOURCE1} %{buildroot}%{_initrddir}/atd
+chmod 755 %{buildroot}%{_initrddir}/atd
 %else
 #(tpg) install systemd initscript
 mkdir -p %{buildroot}%{_unitdir}
