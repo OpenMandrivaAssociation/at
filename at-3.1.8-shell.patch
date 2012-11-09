@@ -1,0 +1,29 @@
+Index: at.1.in
+===================================================================
+--- at.1.in
++++ at.1.in	2008-08-15 16:46:44.336420027 +0200
+@@ -32,7 +32,10 @@
+ and
+ .B batch
+ read commands from standard input or a specified file which are to
+-be executed at a later time, using
++be executed at a later time, using the shell set by the user's environment
++variable
++.BR SHELL,
++the user's login shell, or ultimately
+ .BR /bin/sh .
+ .TP 8
+ .BR at
+Index: at.c
+===================================================================
+--- at.c
++++ at.c	2008-08-15 16:45:34.197420463 +0200
+@@ -942,7 +942,7 @@
+ 	   It also alows a warning diagnostic to be printed.  Because of the
+ 	   possible variance, we always output the diagnostic. */
+ 
+-	fprintf(stderr, "warning: commands will be executed using /bin/sh\n");
++	fprintf(stderr, "warning: commands will be executed using (in order) a) $SHELL b) login shell c) /bin/sh\n");
+ 
+ 	writefile(timer, queue);
+ 	break;
