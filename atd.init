@@ -1,0 +1,96 @@
+#!/bin/bash
+#
+#	/etc/rc.d/init.d/atd
+#
+# Starts the at daemon
+#
+# chkconfig: 345 40 60
+# description: Runs commands scheduled by the at command at the time \
+#    specified when at was run, and runs batch commands when the load \
+#    average is low enough.
+# processname: atd
+#
+### BEGIN INIT INFO
+# Provides: atd at
+# Default-Start: 3 4 5
+# Short-Description: Starts the at daemon
+# Description: Runs commands scheduled by the at command at the time
+#              specified when at was run, and runs batch commands when
+#              the load average is low enough.
+### END INIT INFO
+
+# Source function library.
+. /etc/init.d/functions
+
+test -x /usr/sbin/atd || exit 0
+
+[ -f /etc/sysconfig/atd ] && . /etc/sysconfig/atd
+
+RETVAL=0
+
+#
+#	See how we were called.
+#
+
+prog="atd"
+
+start() {
+	# Check if atd is already running
+	if [ ! -f /var/lock/subsys/atd ]; then
+	    gprintf "Starting %s: " "$prog"
+	    daemon /usr/sbin/atd ${ATD_OPTS}
+	    RETVAL=$?
+	    [ $RETVAL -eq 0 ] && touch /var/lock/subsys/atd
+	    echo
+	fi
+	return $RETVAL
+}
+
+stop() {
+	gprintf "Stopping %s: " "$prog"
+	killproc /usr/sbin/atd
+	RETVAL=$?
+	[ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/atd
+	echo
+        return $RETVAL
+}
+
+
+restart() {
+	stop
+	start
+}	
+
+reload() {
+	restart
+}	
+
+status_at() {
+ 	status /usr/sbin/atd
+}
+
+case "$1" in
+start)
+	start
+	;;
+stop)
+	stop
+	;;
+reload|restart)
+	restart
+	;;
+condrestart)
+	if [ -f /var/lock/subsys/atd ]; then
+	    restart
+	fi
+	;;
+status)
+	status_at
+	;;
+*)
+	gprintf "Usage: %s {start|stop|restart|condrestart|status}\n" "$0"
+	exit 1
+esac
+
+exit $?
+exit $RETVAL

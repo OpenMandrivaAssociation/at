@@ -1,0 +1,7 @@
+# atd options to set, see man atd
+# Olivier Thauvin <nanardon@mandriva.org> - Mandriva
+
+# This setup load under which batchjobs are launch
+# to about N CPUs
+LOAD=`/usr/bin/getconf _NPROCESSORS_ONLN | /bin/awk '{print $1 - 0.2}'`
+ATD_OPTS="-l $LOAD"
