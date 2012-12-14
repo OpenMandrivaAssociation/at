@@ -43,9 +43,9 @@ day/week/etc.
 
 %prep
 %setup -q
-%patch3 -p1 -b .sigchld
-%patch9 -p0 -b .shell
-%patch11 -p1 -b .makefile
+%patch3 -p1 -b .sigchld~
+%patch9 -p0 -b .shell~
+%patch11 -p1 -b .makefile~
 autoreconf -fi
 
 %build
@@ -58,22 +58,20 @@ autoreconf -fi
 %make
 
 %install
-mkdir -p %{buildroot}/{%{_bindir},%{_sbindir},%{_mandir}/man{1,5,8}}
+mkdir -p %{buildroot}{%{_bindir},%{_sbindir},%{_mandir}/man{1,5,8}}
 
 make install IROOT=%{buildroot} DAEMON_USERNAME=`id -nu` \
 	DAEMON_GROUPNAME=`id -ng` \
     atdocdir=%{_docdir}/at
 
-echo > %{buildroot}/%{_sysconfdir}/at.deny
+touch %{buildroot}%{_sysconfdir}/at.deny
 
-mkdir -p %{buildroot}/%{_sysconfdir}/pam.d
-install -m 644 %{SOURCE2} %{buildroot}/%{_sysconfdir}/pam.d/atd
+install -p -m644 %{SOURCE2} -D %{buildroot}%{_sysconfdir}/pam.d/atd
 
-install -D -m 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/sysconfig/atd
+install -p -m644 %{SOURCE3} -D %{buildroot}%{_sysconfdir}/sysconfig/atd
 
 #(tpg) install systemd initscript
-mkdir -p %{buildroot}%{_unitdir}
-install -m 644 %{SOURCE4} %{buildroot}%{_unitdir}/atd.service
+install -p -m644 %{SOURCE4} -D %{buildroot}%{_unitdir}/atd.service
 
 %post
 touch /var/spool/at/.SEQ
@@ -115,9 +113,9 @@ fi
 %{_mandir}/*/at.allow.5*
 %{_mandir}/*/at.deny.5*
 
-
 %changelog
 * Fri Dec 14 2012 Per Øyvind Karlsen <peroyvind@mandriva.org> 3.1.13-8
+- cleanup a bit
 - do autoreconf in %prep
 
 * Sun Sep 09 2012 Tomasz Pawel Gajc <tpg@mandriva.org> 3.1.13-4
