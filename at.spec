@@ -1,7 +1,7 @@
 Summary:	Job spooling tools
 Name:		at
 Version:	3.1.13
-Release:	7
+Release:	8
 License:	GPL
 Group:		System/Servers
 Url:		http://qa.mandriva.com
@@ -13,7 +13,7 @@ Patch3:		at-3.1.7-sigchld.patch
 Patch9:		at-3.1.8-shell.patch
 Patch11:	at-3.1.13-makefile.patch
 Requires(post):	coreutils rpm-helper systemd-units
-Requires(preun): coreutils rpm-helper systemd-units
+Requires(preun):coreutils rpm-helper systemd-units
 Conflicts:	crontabs <= 1.5
 Requires:	common-licenses
 BuildRequires:	autoconf
@@ -46,9 +46,9 @@ day/week/etc.
 %patch3 -p1 -b .sigchld
 %patch9 -p0 -b .shell
 %patch11 -p1 -b .makefile
+autoreconf -fi
 
 %build
-autoreconf -fi
 %serverbuild_hardened
 
 %configure2_5x \
@@ -117,6 +117,9 @@ fi
 
 
 %changelog
+* Fri Dec 14 2012 Per Øyvind Karlsen <peroyvind@mandriva.org> 3.1.13-8
+- do autoreconf in %prep
+
 * Sun Sep 09 2012 Tomasz Pawel Gajc <tpg@mandriva.org> 3.1.13-4
 + Revision: 816601
 - install only systemd service for mdv 2012
