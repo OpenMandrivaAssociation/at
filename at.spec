@@ -2,7 +2,7 @@ Summary:	Job spooling tools
 Name:		at
 Version:	3.1.13
 Release:	8
-License:	GPL
+License:	GPLv2+
 Group:		System/Servers
 Url:		http://qa.mandriva.com
 Source0:	http://ftp.debian.org/debian/pool/main/a/at/at_%{version}.orig.tar.gz
@@ -115,6 +115,7 @@ fi
 
 %changelog
 * Fri Dec 14 2012 Per Øyvind Karlsen <peroyvind@mandriva.org> 3.1.13-8
+- update license with version
 - cleanup a bit
 - do autoreconf in %prep
 
