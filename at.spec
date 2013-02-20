@@ -1,7 +1,7 @@
 Summary:	Job spooling tools
 Name:		at
 Version:	3.1.13
-Release:	8
+Release:	9
 License:	GPLv2+
 Group:		System/Servers
 Url:		http://qa.mandriva.com
@@ -12,22 +12,20 @@ Source4:	atd.service
 Patch3:		at-3.1.7-sigchld.patch
 Patch9:		at-3.1.8-shell.patch
 Patch11:	at-3.1.13-makefile.patch
-Requires(post):	coreutils rpm-helper systemd-units
-Requires(preun):coreutils rpm-helper systemd-units
-Conflicts:	crontabs <= 1.5
-Requires:	common-licenses
-BuildRequires:	autoconf
-BuildRequires:	automake
+
+BuildRequires:	bison
+BuildRequires:	cronie
 BuildRequires:	flex
 BuildRequires:	gcc
 BuildRequires:	python
 BuildRequires:	sendmail-command
-BuildRequires:	bison
-BuildRequires:	cronie
-BuildRequires:	pam-devel
 BuildRequires:	systemd-units
+BuildRequires:	pam-devel
 BuildRequires:  pkgconfig(libsystemd-login)
 BuildRequires:  pkgconfig(systemd)
+Requires:	common-licenses
+Requires(post):	coreutils rpm-helper systemd-units
+Requires(preun):coreutils rpm-helper systemd-units
 
 %description
 At and batch read commands from standard input or from a specified file.
@@ -100,9 +98,9 @@ fi
 %attr(0770,daemon,daemon) %dir /var/spool/at/spool
 %{_sbindir}/atrun
 %{_sbindir}/atd
-%attr(6755,daemon,daemon) %{_bindir}/batch
-%attr(6755,daemon,daemon) %{_bindir}/atrm
-%attr(6755,daemon,daemon) %{_bindir}/at
+%attr(755,daemon,daemon) %{_bindir}/batch
+%attr(755,daemon,daemon) %{_bindir}/atrm
+%attr(755,daemon,daemon) %{_bindir}/at
 %{_bindir}/atq
 %{_mandir}/*/atrun.8*
 %{_mandir}/*/atd.8*
