@@ -1,7 +1,7 @@
 Summary:	Job spooling tools
 Name:		at
 Version:	3.1.13
-Release:	9
+Release:	10
 License:	GPLv2+
 Group:		System/Servers
 Url:		http://qa.mandriva.com
@@ -16,6 +16,7 @@ Patch11:	at-3.1.13-makefile.patch
 BuildRequires:	bison
 BuildRequires:	cronie
 BuildRequires:	flex
+BuildRequires:	flex-devel
 BuildRequires:	gcc
 BuildRequires:	python
 BuildRequires:	sendmail-command
