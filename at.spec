@@ -1,7 +1,7 @@
 Summary:	Job spooling tools
 Name:		at
 Version:	3.1.13
-Release:	10
+Release:	11
 License:	GPLv2+
 Group:		System/Servers
 Url:		http://qa.mandriva.com
@@ -50,6 +50,7 @@ autoreconf -fi
 %serverbuild_hardened
 
 %configure2_5x \
+	--with-loadavg_mx="1.5" \ 
 	--with-atspool=/var/spool/at/spool \
 	--with-jobdir=/var/spool/at
 

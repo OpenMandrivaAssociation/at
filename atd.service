@@ -4,7 +4,7 @@ After=syslog.target
 
 [Service]
 EnvironmentFile=/etc/sysconfig/atd
-ExecStart=/usr/sbin/atd -f $ATD_OPTS
+ExecStart=/usr/sbin/atd -f
 
 [Install]
 WantedBy=multi-user.target
