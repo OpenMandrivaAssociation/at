@@ -3,5 +3,5 @@
 
 # This setup load under which batchjobs are launch
 # to about N CPUs
-LOAD=`/usr/bin/getconf _NPROCESSORS_ONLN | /bin/awk '{print $1 - 0.2}'`
-ATD_OPTS="-l $LOAD"
+#LOAD=`/usr/bin/getconf _NPROCESSORS_ONLN | /bin/awk '{print $1 - 0.2}'`
+#ATD_OPTS="-l $LOAD"
