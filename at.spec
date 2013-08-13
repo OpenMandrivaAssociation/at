@@ -4,7 +4,7 @@ Version:	3.1.13
 Release:	11
 License:	GPLv2+
 Group:		System/Servers
-Url:		http://qa.mandriva.com
+Url:		http://anonscm.debian.org/gitweb/?p=collab-maint/at.git
 Source0:	http://ftp.debian.org/debian/pool/main/a/at/at_%{version}.orig.tar.gz
 Source2:	pam.atd
 Source3:	atd.sysconfig
@@ -50,7 +50,7 @@ autoreconf -fi
 %serverbuild_hardened
 
 %configure2_5x \
-	--with-loadavg_mx="1.5" \ 
+	--with-loadavg_mx=1.5 \ 
 	--with-atspool=/var/spool/at/spool \
 	--with-jobdir=/var/spool/at
 
