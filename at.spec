@@ -51,8 +51,8 @@ autoreconf -fi
 
 %configure2_5x \
 	--with-loadavg_mx=1.5 \ 
-	--with-atspool=/var/spool/at/spool \
-	--with-jobdir=/var/spool/at
+	--with-atspool=%{_localstatedir}/spool/at/spool \
+	--with-jobdir=%{_localstatedir}/spool/at
 
 %make
 
