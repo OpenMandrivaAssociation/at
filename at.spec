@@ -50,7 +50,7 @@ autoreconf -fi
 %serverbuild_hardened
 
 %configure2_5x \
-	--with-loadavg_mx=1.5 \ 
+	--with-loadavg_mx=1.5 \
 	--with-atspool=%{_localstatedir}/spool/at/spool \
 	--with-jobdir=%{_localstatedir}/spool/at
 
