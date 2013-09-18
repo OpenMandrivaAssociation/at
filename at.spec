@@ -1,7 +1,7 @@
 Summary:	Job spooling tools
 Name:		at
-Version:	3.1.13
-Release:	11
+Version:	3.1.14
+Release:	1
 License:	GPLv2+
 Group:		System/Servers
 Url:		http://anonscm.debian.org/gitweb/?p=collab-maint/at.git
@@ -10,8 +10,9 @@ Source2:	pam.atd
 Source3:	atd.sysconfig
 Source4:	atd.service
 Patch3:		at-3.1.7-sigchld.patch
+Patch4:		at-3.1.13-noroot.patch
 Patch9:		at-3.1.8-shell.patch
-Patch11:	at-3.1.13-makefile.patch
+Patch10:	at-3.1.14-parallel-build.patch
 
 BuildRequires:	bison
 BuildRequires:	cronie
@@ -41,13 +42,15 @@ day/week/etc.
 
 %prep
 %setup -q
-%patch3 -p1 -b .sigchld~
-%patch9 -p0 -b .shell~
-%patch11 -p1 -b .makefile~
-autoreconf -fi
+%patch3 -p1 -b .sigchld
+%patch4 -p0 -b .noroot
+%patch9 -p0 -b .shell
+%patch10 -p0 -b .parallel
+autoreconf -fiv
 
 %build
 %serverbuild_hardened
+%setup_compile_flags
 
 %configure2_5x \
 	--with-loadavg_mx=1.5 \
@@ -76,10 +79,6 @@ install -p -m644 %{SOURCE4} -D %{buildroot}%{_unitdir}/atd.service
 touch /var/spool/at/.SEQ
 chmod 660 /var/spool/at/.SEQ
 chown daemon.daemon /var/spool/at/.SEQ
-
-if [ "$1" = "1" ]; then
- /bin/systemctl enable atd.service >/dev/null 2>&1 || :
-fi
 
 %_post_service atd
 
