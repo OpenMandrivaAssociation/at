@@ -1,3 +1,5 @@
+%define	debug_package	%nil
+
 Summary:	Job spooling tools
 Name:		at
 Version:	3.1.14
@@ -50,7 +52,6 @@ autoreconf -fiv
 
 %build
 %serverbuild_hardened
-%setup_compile_flags
 
 %configure2_5x \
 	--with-loadavg_mx=1.5 \
