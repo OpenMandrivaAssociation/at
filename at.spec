@@ -1,4 +1,4 @@
-%define	debug_package	%nil
+%define	debug_package %nil
 
 Summary:	Job spooling tools
 Name:		at
@@ -88,8 +88,8 @@ chown daemon.daemon /var/spool/at/.SEQ
 
 %files
 %doc ChangeLog Problems README Copyright timespec
-%attr(0640,root,daemon) %config(noreplace) %{_sysconfdir}/at.deny
-%config(noreplace) %{_sysconfdir}/sysconfig/atd
+%attr(0644,root,root) %config(noreplace) %{_sysconfdir}/at.deny
+%attr(0644,root,root) %config(noreplace) %{_sysconfdir}/sysconfig/atd
 
 %attr(0644,root,root) %{_unitdir}/atd.service
 
@@ -98,10 +98,10 @@ chown daemon.daemon /var/spool/at/.SEQ
 %attr(0660,daemon,daemon) %verify(not md5 size mtime) %ghost /var/spool/at/.SEQ
 %attr(0770,daemon,daemon) %dir /var/spool/at/spool
 %{_sbindir}/atrun
-%{_sbindir}/atd
-%attr(755,daemon,daemon) %{_bindir}/batch
-%attr(755,daemon,daemon) %{_bindir}/atrm
-%attr(755,daemon,daemon) %{_bindir}/at
+%attr(0755,root,root) %{_sbindir}/atd
+%attr(755,root,root) %{_bindir}/batch
+%attr(755,root,root) %{_bindir}/atrm
+%attr(4755,root,root) %{_bindir}/at
 %{_bindir}/atq
 %{_mandir}/*/atrun.8*
 %{_mandir}/*/atd.8*
