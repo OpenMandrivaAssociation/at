@@ -1,7 +1,9 @@
+%define	debug_package %nil
+
 Summary:	Job spooling tools
 Name:		at
-Version:	3.1.13
-Release:	11
+Version:	3.1.14
+Release:	5
 License:	GPLv2+
 Group:		System/Servers
 Url:		http://anonscm.debian.org/gitweb/?p=collab-maint/at.git
@@ -10,8 +12,9 @@ Source2:	pam.atd
 Source3:	atd.sysconfig
 Source4:	atd.service
 Patch3:		at-3.1.7-sigchld.patch
+Patch4:		at-3.1.13-noroot.patch
 Patch9:		at-3.1.8-shell.patch
-Patch11:	at-3.1.13-makefile.patch
+Patch10:	at-3.1.14-parallel-build.patch
 
 BuildRequires:	bison
 BuildRequires:	cronie
@@ -41,10 +44,11 @@ day/week/etc.
 
 %prep
 %setup -q
-%patch3 -p1 -b .sigchld~
-%patch9 -p0 -b .shell~
-%patch11 -p1 -b .makefile~
-autoreconf -fi
+%patch3 -p1 -b .sigchld
+%patch4 -p0 -b .noroot
+%patch9 -p0 -b .shell
+%patch10 -p0 -b .parallel
+autoreconf -fiv
 
 %build
 %serverbuild_hardened
@@ -77,10 +81,6 @@ touch /var/spool/at/.SEQ
 chmod 660 /var/spool/at/.SEQ
 chown daemon.daemon /var/spool/at/.SEQ
 
-if [ "$1" = "1" ]; then
- /bin/systemctl enable atd.service >/dev/null 2>&1 || :
-fi
-
 %_post_service atd
 
 %preun
@@ -88,8 +88,8 @@ fi
 
 %files
 %doc ChangeLog Problems README Copyright timespec
-%attr(0640,root,daemon) %config(noreplace) %{_sysconfdir}/at.deny
-%config(noreplace) %{_sysconfdir}/sysconfig/atd
+%attr(0644,root,root) %config(noreplace) %{_sysconfdir}/at.deny
+%attr(0644,root,root) %config(noreplace) %{_sysconfdir}/sysconfig/atd
 
 %attr(0644,root,root) %{_unitdir}/atd.service
 
@@ -98,10 +98,10 @@ fi
 %attr(0660,daemon,daemon) %verify(not md5 size mtime) %ghost /var/spool/at/.SEQ
 %attr(0770,daemon,daemon) %dir /var/spool/at/spool
 %{_sbindir}/atrun
-%{_sbindir}/atd
-%attr(755,daemon,daemon) %{_bindir}/batch
-%attr(755,daemon,daemon) %{_bindir}/atrm
-%attr(755,daemon,daemon) %{_bindir}/at
+%attr(0755,root,root) %{_sbindir}/atd
+%attr(755,root,root) %{_bindir}/batch
+%attr(755,root,root) %{_bindir}/atrm
+%attr(4755,root,root) %{_bindir}/at
 %{_bindir}/atq
 %{_mandir}/*/atrun.8*
 %{_mandir}/*/atd.8*
