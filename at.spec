@@ -3,7 +3,7 @@
 Summary:	Job spooling tools
 Name:		at
 Version:	3.1.14
-Release:	5
+Release:	6
 License:	GPLv2+
 Group:		System/Servers
 Url:		http://anonscm.debian.org/gitweb/?p=collab-maint/at.git
@@ -88,7 +88,7 @@ chown daemon.daemon /var/spool/at/.SEQ
 
 %files
 %doc ChangeLog Problems README Copyright timespec
-%attr(0644,root,root) %config(noreplace) %{_sysconfdir}/at.deny
+%attr(0644,daemon,daemon) %config(noreplace) %{_sysconfdir}/at.deny
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/sysconfig/atd
 
 %attr(0644,root,root) %{_unitdir}/atd.service
@@ -98,10 +98,10 @@ chown daemon.daemon /var/spool/at/.SEQ
 %attr(0660,daemon,daemon) %verify(not md5 size mtime) %ghost /var/spool/at/.SEQ
 %attr(0770,daemon,daemon) %dir /var/spool/at/spool
 %{_sbindir}/atrun
-%attr(0755,root,root) %{_sbindir}/atd
-%attr(755,root,root) %{_bindir}/batch
-%attr(755,root,root) %{_bindir}/atrm
-%attr(4755,root,root) %{_bindir}/at
+%{_sbindir}/atd
+%attr(6755,daemon,daemon) %{_bindir}/batch
+%attr(6755,daemon,daemon) %{_bindir}/atrm
+%attr(6755,daemon,daemon) %{_bindir}/at
 %{_bindir}/atq
 %{_mandir}/*/atrun.8*
 %{_mandir}/*/atd.8*
