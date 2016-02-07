@@ -3,7 +3,7 @@
 Summary:	Job spooling tools
 Name:		at
 Version:	3.1.16
-Release:	3
+Release:	4
 License:	GPLv2+
 Group:		System/Servers
 Url:		http://anonscm.debian.org/gitweb/?p=collab-maint/at.git
@@ -19,16 +19,14 @@ Patch10:	at-3.1.14-parallel-build.patch
 BuildRequires:	bison
 BuildRequires:	cronie
 BuildRequires:	flex-devel
-BuildRequires:	gcc
 BuildRequires:	python
 BuildRequires:	sendmail-command
-BuildRequires:	systemd-units
 BuildRequires:	pam-devel
-BuildRequires:  pkgconfig(libsystemd-login)
-BuildRequires:  pkgconfig(systemd)
+BuildRequires: 	pkgconfig(libsystemd-login)
+BuildRequires: 	pkgconfig(systemd)
 Requires:	common-licenses
-Requires(post):	coreutils rpm-helper systemd-units
-Requires(preun):coreutils rpm-helper systemd-units
+Requires(post):	rpm-helper
+Requires(preun):	rpm-helper
 
 %description
 At and batch read commands from standard input or from a specified file.
@@ -53,7 +51,7 @@ autoreconf -fiv
 %build
 %serverbuild_hardened
 
-%configure2_5x \
+%configure \
 	--with-loadavg_mx=1.5 \
 	--with-atspool=%{_localstatedir}/spool/at/spool \
 	--with-jobdir=%{_localstatedir}/spool/at
@@ -80,11 +78,6 @@ install -p -m644 %{SOURCE4} -D %{buildroot}%{_unitdir}/atd.service
 touch /var/spool/at/.SEQ
 chmod 660 /var/spool/at/.SEQ
 chown daemon.daemon /var/spool/at/.SEQ
-
-%_post_service atd
-
-%preun
-%_preun_service atd
 
 %files
 %doc ChangeLog Problems README Copyright timespec
