@@ -2,8 +2,8 @@
 
 Summary:	Job spooling tools
 Name:		at
-Version:	3.1.16
-Release:	4
+Version:	3.1.20
+Release:	1
 License:	GPLv2+
 Group:		System/Servers
 Url:		http://anonscm.debian.org/gitweb/?p=collab-maint/at.git
@@ -22,7 +22,6 @@ BuildRequires:	flex-devel
 BuildRequires:	python
 BuildRequires:	sendmail-command
 BuildRequires:	pam-devel
-BuildRequires: 	pkgconfig(libsystemd-login)
 BuildRequires: 	pkgconfig(systemd)
 Requires:	common-licenses
 Requires(post):	rpm-helper
