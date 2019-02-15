@@ -1,8 +1,7 @@
-Index: at.1.in
-===================================================================
---- at.1.in
-+++ at.1.in	2008-08-15 16:46:44.336420027 +0200
-@@ -32,7 +32,10 @@
+diff -up at-3.1.23/at.1.in.shell at-3.1.23/at.1.in
+--- at-3.1.23/at.1.in.shell	2019-02-16 00:02:24.568360228 +0100
++++ at-3.1.23/at.1.in	2019-02-16 00:03:50.058763537 +0100
+@@ -48,7 +48,10 @@ at, batch, atq, atrm \- queue, examine,
  and
  .B batch
  read commands from standard input or a specified file which are to
@@ -13,12 +12,11 @@ Index: at.1.in
 +the user's login shell, or ultimately
  .BR /bin/sh .
  .TP 8
- .BR at
-Index: at.c
-===================================================================
---- at.c
-+++ at.c	2008-08-15 16:45:34.197420463 +0200
-@@ -942,7 +942,7 @@
+ .B at
+diff -up at-3.1.23/at.c.shell at-3.1.23/at.c
+--- at-3.1.23/at.c.shell	2018-07-24 14:41:23.000000000 +0200
++++ at-3.1.23/at.c	2019-02-16 00:02:24.568360228 +0100
+@@ -946,7 +946,7 @@ main(int argc, char **argv)
  	   It also alows a warning diagnostic to be printed.  Because of the
  	   possible variance, we always output the diagnostic. */
  

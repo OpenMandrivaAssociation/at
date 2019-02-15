@@ -1,0 +1,16 @@
+diff -up at-3.1.23/configure.ac.postfix~ at-3.1.23/configure.ac
+--- at-3.1.23/configure.ac.postfix~	2019-02-16 00:09:32.354168658 +0100
++++ at-3.1.23/configure.ac	2019-02-16 00:11:52.595331797 +0100
+@@ -83,11 +83,9 @@ AC_CHECK_HEADERS(security/pam_appl.h, [
+ 
+ dnl Checking for programs
+ 
+-AC_PATH_PROG(SENDMAIL, sendmail, , $PATH:/usr/lib:/usr/sbin )
+-if test "$SENDMAIL" != "" ; then
++SENDMAIL="/usr/sbin/sendmail.postfix"
+ AC_DEFINE_UNQUOTED(SENDMAIL,"$SENDMAIL", [Define mail command for sending])
+ MAIL_CMD="$SENDMAIL"
+-fi
+ 
+ AC_SUBST(MAIL_CMD)
+ AC_SUBST(PAMLIB)

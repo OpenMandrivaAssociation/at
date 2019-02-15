@@ -2,8 +2,8 @@
 
 Summary:	Job spooling tools
 Name:		at
-Version:	3.1.20
-Release:	2
+Version:	3.1.23
+Release:	1
 License:	GPLv2+
 Group:		System/Servers
 Url:		http://anonscm.debian.org/gitweb/?p=collab-maint/at.git
@@ -15,6 +15,7 @@ Patch3:		at-3.1.7-sigchld.patch
 Patch4:		at-3.1.13-noroot.patch
 Patch9:		at-3.1.8-shell.patch
 Patch10:	at-3.1.14-parallel-build.patch
+Patch11:	at-3.1.23-postfix.patch
 
 BuildRequires:	bison
 BuildRequires:	cronie
@@ -43,8 +44,9 @@ day/week/etc.
 %setup -q
 %patch3 -p1 -b .sigchld
 %patch4 -p0 -b .noroot
-%patch9 -p0 -b .shell
+%patch9 -p1 -b .shell
 %patch10 -p0 -b .parallel
+%patch11 -p1 -b .postfix~
 autoreconf -fiv
 
 %build
