@@ -57,7 +57,7 @@ autoreconf -fiv
 	--with-atspool=%{_localstatedir}/spool/at/spool \
 	--with-jobdir=%{_localstatedir}/spool/at
 
-%make
+%make_build
 
 %install
 mkdir -p %{buildroot}{%{_bindir},%{_sbindir},%{_mandir}/man{1,5,8}}
