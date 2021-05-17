@@ -1,8 +1,6 @@
-%define	debug_package %nil
-
 Summary:	Job spooling tools
 Name:		at
-Version:	3.1.23
+Version:	3.2.2
 Release:	1
 License:	GPLv2+
 Group:		System/Servers
@@ -41,12 +39,7 @@ a recurring job that will need to be repeated at the same time every
 day/week/etc.
 
 %prep
-%setup -q
-%patch3 -p1 -b .sigchld
-%patch4 -p0 -b .noroot
-%patch9 -p1 -b .shell
-%patch10 -p0 -b .parallel
-%patch11 -p1 -b .postfix~
+%autosetup -p1
 autoreconf -fiv
 
 %build
@@ -94,7 +87,7 @@ chown daemon.daemon /var/spool/at/.SEQ
 %{_sbindir}/atrun
 %{_sbindir}/atd
 %attr(6755,daemon,daemon) %{_bindir}/batch
-%attr(6755,daemon,daemon) %{_bindir}/atrm
+%{_bindir}/atrm
 %attr(6755,daemon,daemon) %{_bindir}/at
 %{_bindir}/atq
 %{_mandir}/*/atrun.8*
@@ -105,3 +98,4 @@ chown daemon.daemon /var/spool/at/.SEQ
 %{_mandir}/*/batch.1*
 %{_mandir}/*/at.allow.5*
 %{_mandir}/*/at.deny.5*
+%{_datadir}/at
