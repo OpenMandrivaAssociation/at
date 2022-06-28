@@ -1,7 +1,7 @@
 Summary:	Job spooling tools
 Name:		at
 Version:	3.2.2
-Release:	2
+Release:	3
 License:	GPLv2+
 Group:		System/Servers
 Url:		http://anonscm.debian.org/gitweb/?p=collab-maint/at.git
@@ -21,10 +21,9 @@ BuildRequires:	flex-devel
 BuildRequires:	python
 BuildRequires:	sendmail-command
 BuildRequires:	pam-devel
-BuildRequires: 	pkgconfig(systemd)
+BuildRequires: 	systemd-rpm-macros
 Requires:	common-licenses
-Requires(post):	rpm-helper
-Requires(preun):	rpm-helper
+
 
 %description
 At and batch read commands from standard input or from a specified file.
@@ -60,26 +59,21 @@ make install IROOT=%{buildroot} DAEMON_USERNAME=`id -nu` \
     atdocdir=%{_docdir}/at
 
 touch %{buildroot}%{_sysconfdir}/at.deny
-
 install -p -m644 %{SOURCE2} -D %{buildroot}%{_sysconfdir}/pam.d/atd
-
 install -p -m644 %{SOURCE3} -D %{buildroot}%{_sysconfdir}/sysconfig/atd
-
 #(tpg) install systemd initscript
 install -p -m644 %{SOURCE4} -D %{buildroot}%{_unitdir}/atd.service
 
 %post
 touch /var/spool/at/.SEQ
 chmod 660 /var/spool/at/.SEQ
-chown daemon.daemon /var/spool/at/.SEQ
+chown daemon:daemon /var/spool/at/.SEQ
 
 %files
 %doc ChangeLog Problems README Copyright timespec
 %attr(0644,daemon,daemon) %config(noreplace) %{_sysconfdir}/at.deny
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/sysconfig/atd
-
 %attr(0644,root,root) %{_unitdir}/atd.service
-
 %{_sysconfdir}/pam.d/atd
 %attr(0770,daemon,daemon) %dir /var/spool/at
 %attr(0660,daemon,daemon) %verify(not md5 size mtime) %ghost /var/spool/at/.SEQ
@@ -90,12 +84,12 @@ chown daemon.daemon /var/spool/at/.SEQ
 %{_bindir}/atrm
 %attr(6755,daemon,daemon) %{_bindir}/at
 %{_bindir}/atq
-%{_mandir}/*/atrun.8*
-%{_mandir}/*/atd.8*
-%{_mandir}/*/at.1*
-%{_mandir}/*/atq.1*
-%{_mandir}/*/atrm.1*
-%{_mandir}/*/batch.1*
-%{_mandir}/*/at.allow.5*
-%{_mandir}/*/at.deny.5*
+%doc %{_mandir}/*/atrun.8*
+%doc %{_mandir}/*/atd.8*
+%doc %{_mandir}/*/at.1*
+%doc %{_mandir}/*/atq.1*
+%doc %{_mandir}/*/atrm.1*
+%doc %{_mandir}/*/batch.1*
+%doc %{_mandir}/*/at.allow.5*
+%doc %{_mandir}/*/at.deny.5*
 %{_datadir}/at
