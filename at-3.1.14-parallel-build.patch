@@ -1,6 +1,7 @@
---- at/Makefile.in~	2009-12-07 13:46:26.000000000 +0100
-+++ at/Makefile.in	2009-12-07 13:51:14.000000000 +0100
-@@ -76,7 +76,7 @@
+diff -up at-3.2.5/Makefile.in.4~ at-3.2.5/Makefile.in
+--- at-3.2.5/Makefile.in.4~	2022-08-28 17:46:21.272296926 +0200
++++ at-3.2.5/Makefile.in	2022-08-28 17:52:06.276976355 +0200
+@@ -87,7 +87,7 @@ atd: $(RUNOBJECTS)
  y.tab.c y.tab.h: parsetime.y
  	$(YACC) -d parsetime.y
  
@@ -8,4 +9,4 @@
 +lex.yy.c: parsetime.l y.tab.h
  	$(LEX) -i parsetime.l
  
- atd.service: atd.service.in
+ parsetime.l: y.tab.h

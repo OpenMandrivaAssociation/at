@@ -1,7 +1,7 @@
 Summary:	Job spooling tools
 Name:		at
-Version:	3.2.2
-Release:	3
+Version:	3.2.5
+Release:	1
 License:	GPLv2+
 Group:		System/Servers
 Url:		http://anonscm.debian.org/gitweb/?p=collab-maint/at.git
