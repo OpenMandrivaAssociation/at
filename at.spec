@@ -4,7 +4,7 @@ Version:	3.2.5
 Release:	2
 License:	GPLv2+
 Group:		System/Servers
-Url:		http://anonscm.debian.org/gitweb/?p=collab-maint/at.git
+Url:		https://anonscm.debian.org/gitweb/?p=collab-maint/at.git
 Source0:	http://ftp.debian.org/debian/pool/main/a/at/at_%{version}.orig.tar.gz
 Source2:	pam.atd
 Source3:	atd.sysconfig
